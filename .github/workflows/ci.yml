@@ -1,4 +1,4 @@
-name: CI
+name: CI — TP PowerShell
 
 on:
   push:
@@ -7,12 +7,109 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Example step
-        run: echo "Add your build/test steps here!"
+      # ── 1. Vérifier que tous les scripts attendus sont présents ──────────
+      - name: Vérification des scripts attendus
+        run: |
+          scripts=(
+            "mon-projet/src/info.ps1"
+            "mon-projet/src/check-logs.ps1"
+            "mon-projet/src/analyse-niveaux.ps1"
+            "mon-projet/src/rapport.ps1"
+            "mon-projet/src/couleurs.ps1"
+            "mon-projet/src/check-env.ps1"
+            "setup.ps1"
+          )
+
+          all_present=true
+          for script in "${scripts[@]}"; do
+            if [ -f "$script" ]; then
+              echo "✅ $script"
+            else
+              echo "❌ $script — manquant"
+              all_present=false
+            fi
+          done
+
+          if [ "$all_present" = false ]; then
+            echo ""
+            echo "❌ Certains scripts sont manquants. Vérifiez votre travail."
+            exit 1
+          fi
+          echo ""
+          echo "✅ Tous les scripts attendus sont présents !"
+
+      # ── 2. Vérification syntaxique PowerShell ────────────────────────────
+      - name: Vérification syntaxique PowerShell
+        shell: pwsh
+        run: |
+          $hasErrors = $false
+          Write-Host "=== Vérification syntaxique ==="
+
+          Get-ChildItem -Recurse -Filter "*.ps1" | Sort-Object FullName | ForEach-Object {
+            $script = $_.FullName
+            $name   = $_.Name
+            $parseErrors = $null
+            $null = [System.Management.Automation.Language.Parser]::ParseFile(
+              $script, [ref]$null, [ref]$parseErrors
+            )
+            if ($parseErrors.Count -gt 0) {
+              Write-Host ""
+              Write-Host "❌ $name — erreurs de syntaxe :" -ForegroundColor Red
+              $parseErrors | ForEach-Object { Write-Host "   $_" -ForegroundColor Red }
+              $hasErrors = $true
+            } else {
+              Write-Host "✅ $name" -ForegroundColor Green
+            }
+          }
+
+          if ($hasErrors) {
+            Write-Host ""
+            Write-Host "❌ Des erreurs de syntaxe ont été trouvées." -ForegroundColor Red
+            exit 1
+          }
+
+      # ── 3. Exécution des scripts ─────────────────────────────────────────
+      - name: Exécution des scripts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path "mon-projet/logs" -Force | Out-Null
+
+          $scripts = @(
+            "mon-projet/src/info.ps1"
+            "mon-projet/src/check-logs.ps1"
+            "mon-projet/src/analyse-niveaux.ps1"
+            "mon-projet/src/rapport.ps1"
+            "mon-projet/src/couleurs.ps1"
+            "mon-projet/src/check-env.ps1"
+            "setup.ps1"
+          )
+
+          $hasErrors = $false
+          Write-Host "=== Exécution des scripts ==="
+
+          foreach ($script in $scripts) {
+            Write-Host ""
+            Write-Host "▶ $script"
+            try {
+              & ".\$script"
+              Write-Host "  ✅ Exécution réussie" -ForegroundColor Green
+            } catch {
+              Write-Host "  ❌ Erreur : $_" -ForegroundColor Red
+              $hasErrors = $true
+            }
+          }
+
+          if ($hasErrors) {
+            Write-Host ""
+            Write-Host "❌ Un ou plusieurs scripts ont échoué à l'exécution." -ForegroundColor Red
+            exit 1
+          }
+          Write-Host ""
+          Write-Host "✅ Tous les scripts s'exécutent sans erreur !" -ForegroundColor Green
