@@ -269,6 +269,57 @@ Select-String -Pattern "error" -Path "ressources/server.log" -CaseSensitive:$fal
 
 ---
 
+## Avant d'écrire vos premiers scripts
+
+Avant de passer aux scripts, trois notions essentielles que vous allez croiser à chaque exercice :
+
+### Pas de shebang en PowerShell
+
+Contrairement à Bash, les scripts PowerShell n'ont **pas besoin d'une ligne `#!`** en début de fichier. L'extension `.ps1` suffit à indiquer au système qu'il s'agit d'un script PowerShell.
+
+En revanche, il est courant d'ajouter un commentaire d'en-tête pour documenter le script :
+
+```powershell
+# mon-script.ps1 — Description de ce que fait le script
+# Auteur : ...
+```
+
+---
+
+### La politique d'exécution (ExecutionPolicy)
+
+Par défaut sur Windows, PowerShell **refuse d'exécuter des scripts** `.ps1` pour des raisons de sécurité. Vous devez autoriser l'exécution une seule fois avec :
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+| Option | Signification |
+|--------|--------------|
+| `RemoteSigned` | Autorise les scripts locaux, bloque les scripts téléchargés non signés |
+| `Scope CurrentUser` | S'applique uniquement à votre compte — pas besoin d'être administrateur |
+
+Sur **macOS/Linux** avec PowerShell 7, cette restriction n'existe pas — vos scripts s'exécutent directement.
+
+> **Règle :** faites cette commande une seule fois sur votre machine Windows. Elle persiste entre les sessions.
+
+---
+
+### `.\script.ps1` vs `pwsh -File script.ps1`
+
+Il existe deux façons de lancer un script PowerShell :
+
+| Commande | Ce qui se passe |
+|----------|----------------|
+| `.\mon-script.ps1` | Lance le script dans la session PowerShell courante — les variables et fonctions définies restent disponibles après l'exécution. |
+| `pwsh -File mon-script.ps1` | Lance le script dans une nouvelle session PowerShell isolée — propre, sans hériter de l'environnement actuel. |
+
+Dans ce TP, on utilise toujours `.\script.ps1` — c'est la pratique standard au quotidien.
+
+> **Note :** sur macOS/Linux, le backslash `\` fonctionne, mais vous pouvez aussi utiliser `./mon-script.ps1` avec un slash normal.
+
+---
+
 ## Étape 3 — Variables et conditions (1h)
 
 ### Variables
