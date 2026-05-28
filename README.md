@@ -197,6 +197,17 @@ Get-ChildItem | Where-Object { $_.Length -gt 1024 }
 
 ### Exercice 2.1 — Analyser server.log avec PowerShell
 
+> 🔍 **Syntaxe à retenir : `(expression).Count`**
+>
+> Pour compter les éléments retournés par une commande, encapsulez-la dans des parenthèses `()` puis accédez à `.Count` :
+>
+> ```powershell
+> Get-Content "server.log".Count      # ❌  PowerShell cherche un fichier nommé "server.log".Count
+> (Get-Content "server.log").Count    # ✅  évalue la commande, puis accède à .Count sur le résultat
+> ```
+>
+> Règle générale : pour accéder à une propriété du **résultat** d'une commande, mettez la commande entre `()`. Vous verrez cette syntaxe partout dans les scripts PowerShell.
+
 ```powershell
 # 1. Combien de lignes contient server.log ?
 (Get-Content "ressources/server.log").Count
@@ -223,6 +234,54 @@ Select-String "CRITICAL" "ressources/server.log"
 ---
 
 ### Exercice 2.2 — Générer un rapport
+
+> 🔍 **Trois syntaxes nouvelles apparaissent dans cet exercice — lisez-les avant de copier.**
+
+**1. Le here-string `@"..."@`**
+
+Permet d'écrire du texte sur **plusieurs lignes** sans gérer les guillemets. PowerShell remplace les variables automatiquement à l'intérieur.
+
+```powershell
+$nom = "NexaCloud"
+$texte = @"
+Projet : $nom
+Date   : $(Get-Date -Format 'dd/MM/yyyy')
+"@
+# RÈGLE CRITIQUE : le "@ de fermeture doit être en DÉBUT de ligne, sans espace avant
+```
+
+**2. La sous-expression `$($expr)` dans une chaîne**
+
+À l'intérieur d'un `"..."`, PowerShell remplace `$variable` par sa valeur — mais pour les **expressions** (propriétés, calculs), il faut encapsuler dans `$()` :
+
+```powershell
+$contenu = Get-Content "server.log"
+"Lignes : $contenu.Count"      # ❌  affiche → "Lignes : System.Object[].Count"
+"Lignes : $($contenu.Count)"   # ✅  affiche → "Lignes : 142"
+# Sans $() : PowerShell voit "$contenu" (la variable) puis ".Count" (du texte)
+# Avec $() : PowerShell évalue l'expression entière $contenu.Count
+```
+
+**3. La propriété `.Line` d'un résultat `Select-String`**
+
+`Select-String` ne retourne **pas du texte brut** — il retourne des objets de type `MatchInfo` avec plusieurs propriétés :
+
+```powershell
+Select-String "ERROR" server.log
+# affiche → ressources/server.log:5:2026-01-15 10:23 ERROR Timeout  (format fichier:numéro:contenu)
+
+Select-String "ERROR" server.log | ForEach-Object { $_.Line }
+# affiche → 2026-01-15 10:23 ERROR Timeout  (uniquement le texte de la ligne)
+
+# Propriétés disponibles sur chaque résultat :
+# $_.Line        → le texte complet de la ligne
+# $_.LineNumber  → le numéro de ligne dans le fichier
+# $_.Filename    → le nom du fichier
+```
+
+`$_` = l'objet courant dans le pipeline · `.Line` = la propriété "texte de la ligne"
+
+---
 
 ```powershell
 # Construire un rapport structuré
@@ -251,6 +310,18 @@ Select-String "ERROR" $logFile | ForEach-Object { $_.Line } | Out-File "erreurs.
 ---
 
 ### Pour aller plus loin — Étape 2
+
+> 🔍 **Deux syntaxes nouvelles dans cette section :**
+>
+> **`[PSCustomObject]@{ Propriété = valeur }`** — crée un objet personnalisé "à la volée". Très utile dans une boucle pour fabriquer une collection structurée qu'on peut ensuite exporter en CSV ou afficher avec `Format-Table` :
+>
+> ```powershell
+> [PSCustomObject]@{ Niveau = "ERROR"; Occurrences = 12 }
+> # → crée un objet avec deux propriétés : .Niveau et .Occurrences
+> # → dans une boucle, PowerShell collecte tous ces objets en tableau automatiquement
+> ```
+>
+> **`Export-Csv -NoTypeInformation`** — par défaut, `Export-Csv` ajoute une première ligne dans le fichier CSV indiquant le type PowerShell de l'objet (`#TYPE System.IO.FileInfo`). Ce commentaire technique n'est pas utile. `-NoTypeInformation` le supprime pour obtenir un CSV propre.
 
 ```powershell
 # Exporter les résultats en CSV
@@ -412,6 +483,15 @@ Write-Output "==============================="
 .\mon-projet\src\info.ps1
 ```
 
+> ✏️ **À vous — niveau 1/4 (très facile)**
+>
+> Le script tourne ? Maintenant modifiez-le pour afficher aussi la date et l'heure du jour.
+> Ajoutez cette ligne à l'endroit qui vous semble logique :
+> ```powershell
+> Write-Output "  Date     : $(Get-Date -Format 'dd/MM/yyyy HH:mm')"
+> ```
+> Relancez le script et vérifiez que la date s'affiche correctement.
+
 ---
 
 ### Exercice 3.2 — Script de vérification des logs
@@ -454,6 +534,13 @@ if ($nbCritiques -gt 0) {
 .\mon-projet\src\check-logs.ps1
 ```
 
+> ✏️ **À vous — niveau 2/4 (facile)**
+>
+> 1. Changez `$seuilErreurs = 3` en `$seuilErreurs = 0` et relancez. Que se passe-t-il ? Pourquoi ?
+> 2. Modifiez les messages d'alerte pour qu'ils affichent aussi le nom du fichier analysé.
+>    Résultat attendu : `ALERTE CRITIQUE dans ressources/server.log : 3 incident(s) détecté(s) !`
+> 3. Remettez `$seuilErreurs = 3` avant de passer à la suite.
+
 ---
 
 ### Pour aller plus loin — Étape 3
@@ -486,6 +573,7 @@ switch ($niveau) {
 
 ```powershell
 # ForEach-Object (pipeline)
+# 1..5 = opérateur range → génère @(1, 2, 3, 4, 5) ; fonctionne aussi à l'envers : 5..1
 1..5 | ForEach-Object { Write-Output "Itération $_" }
 
 # foreach (boucle classique)
@@ -503,7 +591,7 @@ for ($i = 1; $i -le 5; $i++) {
 $compteur = 0
 while ($compteur -lt 3) {
     Write-Output "Compteur : $compteur"
-    $compteur++
+    $compteur++   # raccourci pour $compteur = $compteur + 1 ; il existe aussi $compteur-- pour décrémenter
 }
 ```
 
@@ -559,6 +647,22 @@ Write-Output "  TOTAL : $total lignes"
 .\mon-projet\src\analyse-niveaux.ps1
 ```
 
+> ✏️ **À vous — niveau 3/4 (moyen)**
+>
+> Modifiez le script pour afficher en plus le **pourcentage** de chaque niveau par rapport au total.
+>
+> Résultat attendu :
+> ```
+> INFO     : 142 occurrence(s) — 71%
+> WARNING  : 28 occurrence(s)  — 14%
+> ERROR    : 12 occurrence(s)  — 6%
+> CRITICAL : 3 occurrence(s)   — 1%
+> ```
+> Indices :
+> - Calculez le total **avant** la boucle : `$total = (Get-Content $logFile).Count`
+> - Le pourcentage s'obtient avec : `[math]::Round($nb * 100 / $total, 1)`
+> - `[math]::Round(valeur, décimales)` est la fonction d'arrondi PowerShell
+
 ---
 
 ### Exercice 4.2 — Script avec fonctions
@@ -577,7 +681,7 @@ $rapportPath = "mon-projet/logs/rapport-$timestamp.txt"
 
 function Ecrire-Titre {
     param([string]$Titre)
-    $separateur = "=" * 45
+    $separateur = "=" * 45    # chaîne * nombre = répétition : "=" * 3 → "===" ; "ab" * 2 → "abab"
     Write-Output $separateur
     Write-Output "  $Titre"
     Write-Output $separateur
@@ -628,6 +732,23 @@ Write-Output "Rapport sauvegardé : $rapportPath"
 ```powershell
 .\mon-projet\src\rapport.ps1
 ```
+
+> ✏️ **À vous — niveau 4/4 (difficile)**
+>
+> Ajoutez une **quatrième section** dans le fichier rapport listant les 3 dernières lignes CRITICAL avec leur numéro de ligne.
+>
+> Résultat attendu dans le fichier `.txt` généré :
+> ```
+> --- Derniers incidents critiques ---
+> Ligne 47 : 2026-01-15 14:22 CRITICAL Database unreachable
+> Ligne 89 : 2026-01-15 17:05 CRITICAL Memory limit exceeded
+> Ligne 134: 2026-01-15 23:11 CRITICAL Service crash
+> ```
+> Indices :
+> - `Select-String "CRITICAL" $LogFile | Select-Object -Last 3` récupère les 3 derniers
+> - Chaque objet a `.LineNumber` et `.Line` — vous les avez vus dans l'exercice 2.2
+> - Vous avez déjà la fonction `Ecrire-Rapport` — utilisez-la !
+> - Pour construire le texte à passer à `Ecrire-Rapport`, utilisez `ForEach-Object` et `+=` pour concatener
 
 ---
 
@@ -863,6 +984,20 @@ Write-Host ""
 
 ### Pour aller plus loin — Étape 5
 
+> 🔍 **Trois syntaxes nouvelles dans cette section :**
+>
+> **`$_ -split "=", 2`** — l'opérateur `-split` découpe une chaîne en tableau de morceaux. Le `2` limite le nombre de morceaux — essentiel pour ne pas couper une valeur qui contiendrait elle-même un `=` :
+>
+> ```powershell
+> "PORT=5001"            -split "=", 2  # → @("PORT", "5001")            ✅
+> "URL=http://host=path" -split "=", 2  # → @("URL", "http://host=path")  ✅ valeur préservée
+> "URL=http://host=path" -split "="     # → @("URL", "http://host", "path") ❌ valeur découpée
+> ```
+>
+> **`[System.Environment]::SetEnvironmentVariable(nom, valeur, portée)`** — appelle une méthode .NET statique. La syntaxe `[NomDeClasse]::NomDeMethode(args)` donne accès à toute la bibliothèque .NET depuis PowerShell. La portée `"Process"` signifie que la variable existe uniquement dans la session courante.
+>
+> **`$env:PORT`** — lit une variable d'environnement système. Après `SetEnvironmentVariable`, la variable est accessible via `$env:NOM` comme si elle était déclarée dans le shell.
+
 ```powershell
 # Créer et charger un fichier .env
 "PORT=5001" | Out-File ".env"
@@ -919,6 +1054,21 @@ Get-AzResourceGroup | Format-Table ResourceGroupName, Location, ProvisioningStat
 ---
 
 ### Bonus 2 — Script Azure Storage
+
+> 🔍 **Deux syntaxes spécifiques à ce script :**
+>
+> **Le backtick `` ` `` comme continuation de ligne** — en PowerShell, une commande longue peut être étalée sur plusieurs lignes en terminant chaque ligne par `` ` `` :
+>
+> ```powershell
+> New-AzStorageAccount `
+>     -ResourceGroupName "mon-groupe" `
+>     -Name "monstorage"
+> # Équivalent à une seule ligne : New-AzStorageAccount -ResourceGroupName "mon-groupe" -Name "monstorage"
+> ```
+>
+> ⚠️ Il ne doit y avoir **aucun espace** après le backtick — sinon PowerShell ne voit pas la continuation.
+>
+> **`| Out-Null`** — supprime l'affichage du résultat d'une commande. Équivalent de `> /dev/null` en Bash. Utilisé ici pour masquer les sorties verbeuses des cmdlets Azure qui pollueraient la console.
 
 Créez `mon-projet/src/azure-storage.ps1` :
 
@@ -987,6 +1137,9 @@ New-AzKeyVault `
     -Location "francecentral"
 
 # Ajouter un secret
+# ConvertTo-SecureString : convertit du texte en objet SecureString (chiffré en mémoire)
+# -AsPlainText : l'entrée est du texte brut (pas déjà chiffré)
+# -Force       : paramètre obligatoire — confirme qu'on accepte le risque de stocker un mot de passe en clair dans le script
 $secret = ConvertTo-SecureString "MonMotDePasse123!" -AsPlainText -Force
 Set-AzKeyVaultSecret -VaultName $keyVaultName -Name "db-password" -SecretValue $secret
 
