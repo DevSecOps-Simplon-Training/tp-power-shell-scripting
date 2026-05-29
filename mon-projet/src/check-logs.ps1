@@ -21,9 +21,9 @@ Write-Output "  CRITICAL : $nbCritiques"
 Write-Output "==========================="
 
 if ($nbCritiques -gt 0) {
-    Write-Warning "ALERTE CRITIQUE : $nbCritiques incident(s) critique(s) détecté(s) !"
+    Write-Warning "ALERTE CRITIQUE dans $logFile : $nbCritiques incident(s) critique(s) détecté(s) !"
 } elseif ($nbErreurs -gt $seuilErreurs) {
-    Write-Warning "ATTENTION : $nbErreurs erreurs détectées (seuil : $seuilErreurs)"
+    Write-Warning "ATTENTION dans $logFile : $nbErreurs erreurs détectées (seuil : $seuilErreurs)"
 } else {
     Write-Output "OK : les logs sont dans les normes."
 }
