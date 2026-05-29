@@ -10,6 +10,7 @@ Write-Output "==============================="
 if (Test-Path $logFile) {
     $nbLignes = (Get-Content $logFile).Count
     Write-Output "  Log      : $logFile ($nbLignes lignes)"
+    Write-Output "  Date     : $(Get-Date -Format 'dd/MM/yyyy HH:mm')"
 }
 else {
     Write-Output "  Log      : fichier introuvable !"
