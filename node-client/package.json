@@ -1,0 +1,12 @@
+{
+  "name": "log-analyser-client",
+  "version": "1.0.0",
+  "description": "Client Node.js qui interroge l'API Python d'analyse de logs Azure",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}
