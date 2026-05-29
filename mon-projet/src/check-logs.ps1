@@ -1,4 +1,4 @@
-# check-logs.ps1 — Vérifie l'état des logs et alerte si nécessaire
+﻿# check-logs.ps1 — Vérifie l'état des logs et alerte si nécessaire
 
 param(
     [string]$LogFile = "ressources/server.log",

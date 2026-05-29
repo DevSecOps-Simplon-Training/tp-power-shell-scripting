@@ -1,4 +1,4 @@
-# check-env.ps1 — Vérifie que l'environnement est prêt pour NexaCloud
+﻿# check-env.ps1 — Vérifie que l'environnement est prêt pour NexaCloud
 
 function Write-Ok   { param($m) Write-Host "  [OK]   $m" -ForegroundColor Green }
 function Write-Warn { param($m) Write-Host "  [WARN] $m" -ForegroundColor Yellow }
@@ -25,7 +25,7 @@ function Test-File {
             Write-Warn "Fichier manquant : $filePath"
         }
     }
-    
+
 }
 
 Write-Host ""

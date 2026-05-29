@@ -1,4 +1,4 @@
-# setup.ps1 — Prépare le projet NexaCloud en une commande
+﻿# setup.ps1 — Prépare le projet NexaCloud en une commande
 Get-Location | Write-Host
 # Les fonctions d'affichage sont fournies
 function Write-Banner {

@@ -1,4 +1,4 @@
-# couleurs.ps1 — Tester les fonctions d'affichage
+﻿# couleurs.ps1 — Tester les fonctions d'affichage
 
 # Ces deux fonctions sont déjà écrites — observez leur structure
 function Write-Ok   { param($m) Write-Host "[OK]   $m" -ForegroundColor Green }

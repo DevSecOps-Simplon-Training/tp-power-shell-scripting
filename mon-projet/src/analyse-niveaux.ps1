@@ -1,4 +1,4 @@
-# analyse-niveaux.ps1 — Compte chaque niveau de log
+﻿# analyse-niveaux.ps1 — Compte chaque niveau de log
 
 $logFile = "ressources/server.log"
 $niveaux = @("INFO", "WARNING", "ERROR", "CRITICAL")

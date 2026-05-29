@@ -1,4 +1,4 @@
-# info.ps1 — Affiche des informations sur l'environnement
+﻿# info.ps1 — Affiche des informations sur l'environnement
 
 $nomProjet = "NexaCloud"
 $version   = "1.1.0"
