@@ -1,3 +1,5 @@
+# Informations sur le projet et le log
+
 $nomProjet = "NexaCloud"
 $version = "1.1.0"
 $logFile = "ressources/server.log"
