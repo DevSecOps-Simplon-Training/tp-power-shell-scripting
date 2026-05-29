@@ -31,7 +31,7 @@ function Ecrire-Rapport {
 
 if (-not (Test-Path $LogFile)) {
     Write-Error "Fichier introuvable : $LogFile"
-    exit 1
+    return
 }
 
 Ecrire-Titre "RAPPORT D'ANALYSE — $(Get-Date -Format 'dd/MM/yyyy HH:mm')"
