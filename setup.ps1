@@ -11,7 +11,7 @@ function Write-Banner {
 function Write-Ok   { param($m) Write-Host "[OK]   $m" -ForegroundColor Green }
 function Write-Info { param($m) Write-Host "[INFO] $m" -ForegroundColor Cyan }
 function Write-Warn { param($m) Write-Host "[WARN] $m" -ForegroundColor Yellow }
-function Write-Err  { param($m) Write-Host "[ERR]  $m" -ForegroundColor Red; exit 1 }
+function Write-Err  { param($m) Write-Host "[ERR]  $m" -ForegroundColor Red; return }
 
 # La bannière est fournie
 Write-Host ""

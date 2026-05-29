@@ -7,7 +7,7 @@ param(
 
 if (-not (Test-Path $LogFile)) {
     Write-Error "Le fichier $LogFile n'existe pas."
-    exit 1
+    return
 }
 
 $nbErreurs   = (Select-String "ERROR"    $LogFile).Count
