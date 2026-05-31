@@ -1,9 +1,9 @@
-# Créer et charger un fichier .env
-"PORT=5001" | Out-File ".env"
-"ENV=development" | Add-Content ".env"
+# Créer et charger un fichier .env.example
+"PORT=5001" | Out-File ".env.example"
+"ENV=development" | Add-Content ".env.example"
 
-Get-Content ".env" | Where-Object { $_ -match "=" } | ForEach-Object {
+Get-Content ".env.example" | Where-Object { $_ -match "=" } | ForEach-Object {
     $cle, $valeur = $_ -split "=", 2
     [System.Environment]::SetEnvironmentVariable($cle.Trim(), $valeur.Trim(), "Process")
 }
-Write-Output "Port : $env:PORT"
+Write-Output "Port : $env.example:PORT"
