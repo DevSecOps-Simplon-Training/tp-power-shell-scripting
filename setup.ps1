@@ -32,11 +32,6 @@ Write-Ok "Prérequis : Python3, Node.js, npm présents"
 # -- 2. Dépendances Python --------------------------------------------------
 Write-Info "Installation des dépendances Python..."
 
-# TODO: si "python-api/requirements.txt" existe (Test-Path)
-# -> pip install -r python-api/requirements.txt --quiet
-# -> Write-Ok "Dépendances Python installées"
-# Sinon -> Write-Warn pour prévenir sans bloquer
-
 if (Test-Path "python-api/requirements.txt") {
     pip3 install -r python-api/requirements.txt --quiet
     Write-Ok "Dépendances Python installées"
@@ -50,12 +45,6 @@ else {
 # -- 3. Dépendances Node ----------------------------------------------------
 Write-Info "Installation des dépendances Node..."
 
-# TODO: même logique pour "node-client/package.json"
-# Si le fichier existe :
-#   -> Set-Location "node-client"
-#   -> npm install --silent
-#   -> Set-Location ".."
-#   -> Write-Ok
 # Sinon -> Write-Warn
 if (Test-Path "node-client/package.json") {
     Set-Location "node-client"
@@ -73,12 +62,6 @@ else {
 Write-Info "Analyse des logs..."
 $logFile = "ressources/server.log"
 
-# TODO: si $logFile existe :
-# - comptez les ERROR  -> $nbErr  = (Select-String "ERROR"    $logFile).Count
-# - comptez les CRITICAL -> $nbCrit = (Select-String "CRITICAL" $logFile).Count
-# - affichez Write-Ok avec les deux compteurs
-# - si $nbCrit -gt 0 : affichez un message en rouge
-#   et listez les lignes avec Select-String + ForEach-Object { $_.Line }
 if (Test-Path $logFile) {
     $nbErr = (Select-String "ERROR"    $logFile).Count
     $nbCrit = (Select-String "CRITICAL" $logFile).Count
