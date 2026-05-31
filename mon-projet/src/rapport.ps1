@@ -52,8 +52,7 @@ Write-Output "  CRITICAL : $critical"
 Ecrire-Rapport "Compteurs" "INFO=$info  WARNING=$warning  ERROR=$nbError  CRITICAL=$critical" $rapportPath
 Ecrire-Rapport "Incidents critiques" (Select-String "CRITICAL" $LogFile | ForEach-Object { $_.Line } | Out-String) $rapportPath
 Ecrire-Rapport "Erreurs" (Select-String "ERROR" $LogFile | ForEach-Object { $_.Line } | Out-String) $rapportPath
-
-Ecrire-Rapport "Derniers incidents critiques" ((Select-String "CRITICAL" $LogFile | ForEach-Object { "Ligne :$_".LineNumber, $_.Line }) | Out-String) $rapportPath
+Ecrire-Rapport "Derniers incidents critiques" ((Select-String "CRITICAL" $LogFile | ForEach-Object { "Ligne $($_.LineNumber) : $($_.Line)" }) | Out-String) $rapportPath
 
 Write-Output ""
 Write-Output "Rapport sauvegardé : $rapportPath"
