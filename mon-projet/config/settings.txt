@@ -1,0 +1,3 @@
+projet=NexaCloud
+port=5001
+env=development
