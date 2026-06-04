@@ -1,0 +1,18 @@
+RAPPORT ANALYSE - 04/06/2026 10:27
+
+--- Compteurs ---
+INFO=10 WARNING=4 ERROR=5 CRITICAL=3
+
+--- Incidents critiques ---
+2024-01-15 08:18:00 CRITICAL Database connection pool exhausted — all 20 connections in use
+2024-01-15 08:19:30 CRITICAL Azure Key Vault unreachable — secrets cannot be retrieved
+2024-01-15 08:21:00 CRITICAL Disk full on /var/log — logging suspended
+
+
+--- Erreurs ---
+2024-01-15 08:02:45 ERROR Failed to connect to Azure Storage: connection timeout
+2024-01-15 08:05:33 ERROR Authentication failed for service account: deploy_svc
+2024-01-15 08:07:42 ERROR Database query timeout after 30s on table: audit_logs
+2024-01-15 08:09:00 ERROR Max retries exceeded - Azure Storage service unavailable
+2024-01-15 08:12:45 ERROR Backup failed: insufficient permissions on /var/backup/azure
+

@@ -1,0 +1,68 @@
+﻿RAPPORT D'ANALYSE — 29/05/2026 15:17
+
+--- Compteurs ---
+INFO=10  WARNING=4  ERROR=Impossible de remplacer la variable Error, car elle est constante ou en lecture seule. Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\analyse-niveaux.ps1:12 : 19
++     [math]::Round(valeur, dÃ©cimales)
++                   ~
+Parenthèse fermante « ) » manquante dans l’appel de méthode.
+
+Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\analyse-niveaux.ps1:12 : 19
++     [math]::Round(valeur, dÃ©cimales)
++                   ~~~~~~
+Jeton inattendu « valeur » dans l’expression ou l’instruction.
+
+Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\analyse-niveaux.ps1:12 : 25
++     [math]::Round(valeur, dÃ©cimales)
++                         ~
+Argument manquant dans la liste de paramètres.
+
+Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\analyse-niveaux.ps1:8 : 31
++ foreach ($niveau in $niveaux) {
++                               ~
+Accolade fermante « } » manquante dans le bloc d'instruction ou définition du type manquante.
+
+Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\analyse-niveaux.ps1:12 : 37
++     [math]::Round(valeur, dÃ©cimales)
++                                     ~
+Jeton inattendu « ) » dans l’expression ou l’instruction.
+
+Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\analyse-niveaux.ps1:14 : 1
++ }
++ ~
+Jeton inattendu « } » dans l’expression ou l’instruction. Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\analyse-niveaux.ps1:14 : 15
++ [math]::Round(valeur, dÃ©cimales)
++               ~
+Parenthèse fermante « ) » manquante dans l’appel de méthode.
+
+Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\analyse-niveaux.ps1:14 : 15
++ [math]::Round(valeur, dÃ©cimales)
++               ~~~~~~
+Jeton inattendu « valeur » dans l’expression ou l’instruction.
+
+Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\analyse-niveaux.ps1:14 : 21
++ [math]::Round(valeur, dÃ©cimales)
++                     ~
+Argument manquant dans la liste de paramètres.
+
+Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\analyse-niveaux.ps1:14 : 33
++ [math]::Round(valeur, dÃ©cimales)
++                                 ~
+Jeton inattendu « ) » dans l’expression ou l’instruction. Tentative de division par zéro. Tentative de division par zéro. Tentative de division par zéro. Tentative de division par zéro. Tentative de division par zéro. Tentative de division par zéro. Tentative de division par zéro. Tentative de division par zéro. Le terme « Write-Output[math]::Round(valeur, dÃ©cimales) » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez. Tentative de division par zéro. Le terme « Write-Output[math]::Round(valeur, dÃ©cimales) » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez. Tentative de division par zéro. Le terme « Write-Output[math]::Round(valeur, dÃ©cimales) » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez. Tentative de division par zéro. Le terme « Write-Output[math]::Round(valeur, dÃ©cimales) » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez. Tentative de division par zéro. Le fichier autre.log n'existe pas. Le fichier autre.log n'existe pas. Le fichier autre.log n'existe pas. Le terme « -LogFile » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez. Le fichier autre.log n'existe pas. Le terme « .\check-logs.ps1 » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez. Le terme « .\check-logs.ps1 » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez. Le terme « .\check-logs.ps1 » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez. Au caractère C:\Users\Utilisateur\tp-power-shell-scripting\mon-projet\src\check-logs.ps1:25 : 41
++     Write-Warning "ALERTE CRITIQUE dans $logFile: $nbCritiques incide ...
++                                         ~~~~~~~~~
+La référence de variable n’est pas valide. « : » n’est pas suivi d’un caractère de nom de variable valide. Envisagez d’utiliser ${} pour délimiter le nom. Le terme « Whrite-Host » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez. Impossible de trouver un paramètre positionnel acceptant l'argument « if ». Impossible de trouver un paramètre positionnel acceptant l'argument « if ». Le terme « Whrite-Host » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez. Impossible de créer un fichier déjà existant.
+ Impossible de trouver le chemin d'accès « C:\Users\Utilisateur\tp-power-shell-scripting.git », car il n'existe pas.  CRITICAL=3
+
+--- Incidents critiques ---
+2024-01-15 08:18:00 CRITICAL Database connection pool exhausted — all 20 connections in use
+2024-01-15 08:19:30 CRITICAL Azure Key Vault unreachable — secrets cannot be retrieved
+2024-01-15 08:21:00 CRITICAL Disk full on /var/log — logging suspended
+
+
+--- Erreurs ---
+2024-01-15 08:02:45 ERROR Failed to connect to Azure Storage: connection timeout
+2024-01-15 08:05:33 ERROR Authentication failed for service account: deploy_svc
+2024-01-15 08:07:42 ERROR Database query timeout after 30s on table: audit_logs
+2024-01-15 08:09:00 ERROR Max retries exceeded - Azure Storage service unavailable
+2024-01-15 08:12:45 ERROR Backup failed: insufficient permissions on /var/backup/azure
+
