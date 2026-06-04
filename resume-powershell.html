@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Résumé PowerShell — Scripting & Automatisation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 11.5px;
+    color: #1a1a2e;
+    background: #fff;
+    padding: 28px 36px;
+  }
+
+  /* ── En-tête ── */
+  .header {
+    background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+    color: #fff;
+    border-radius: 8px;
+    padding: 22px 28px;
+    margin-bottom: 22px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+  .header p  { font-size: 11px; opacity: 0.75; margin-top: 4px; }
+  .header .badge {
+    display: inline-block;
+    background: #e94560;
+    color: #fff;
+    border-radius: 4px;
+    padding: 2px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  /* ── Grille 2 colonnes ── */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .full { grid-column: 1 / -1; }
+
+  /* ── Cartes ── */
+  .card {
+    background: #f7f9fc;
+    border: 1px solid #dde3ef;
+    border-radius: 7px;
+    padding: 14px 16px;
+  }
+  .card h2 {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #0f3460;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 2px solid #e94560;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+  .card.accent { border-left: 4px solid #e94560; }
+  .card.blue   { border-left: 4px solid #0f3460; }
+  .card.green  { border-left: 4px solid #2ecc71; }
+  .card.orange { border-left: 4px solid #f39c12; }
+  .card.purple { border-left: 4px solid #9b59b6; }
+
+  /* ── Tableaux ── */
+  table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+  th {
+    background: #0f3460;
+    color: #fff;
+    padding: 5px 8px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 10px;
+  }
+  td { padding: 4px 8px; border-bottom: 1px solid #e8ecf4; vertical-align: top; }
+  tr:nth-child(even) td { background: #eef2f9; }
+
+  /* ── Code ── */
+  code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 10.5px;
+    background: #1a1a2e;
+    color: #a8d8ea;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 10px;
+    background: #1a1a2e;
+    color: #e0e0e0;
+    padding: 12px 14px;
+    border-radius: 6px;
+    margin-top: 6px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  pre .kw  { color: #569cd6; font-weight: 600; }
+  pre .fn  { color: #dcdcaa; }
+  pre .str { color: #ce9178; }
+  pre .cmt { color: #6a9955; font-style: italic; }
+  pre .var { color: #9cdcfe; }
+  pre .num { color: #b5cea8; }
+  pre .op  { color: #e94560; }
+
+  /* ── Listes ── */
+  ul { padding-left: 16px; }
+  li { margin-bottom: 3px; line-height: 1.5; }
+  .pill {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 9.5px;
+    font-weight: 600;
+    margin-right: 3px;
+    margin-bottom: 2px;
+  }
+  .pill-blue   { background: #dbe8f8; color: #0f3460; }
+  .pill-red    { background: #fde8ec; color: #c0392b; }
+  .pill-green  { background: #d5f5e3; color: #1e8449; }
+  .pill-yellow { background: #fef9e7; color: #b7770d; }
+
+  /* ── Séparateur ── */
+  .sep { margin: 14px 0; }
+
+  /* ── Astuce ── */
+  .tip {
+    background: #fff8e1;
+    border-left: 4px solid #f39c12;
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    font-size: 10.5px;
+    margin-top: 8px;
+  }
+  .danger {
+    background: #fdecea;
+    border-left: 4px solid #e74c3c;
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    font-size: 10.5px;
+    margin-top: 8px;
+  }
+
+  /* ── Pied de page ── */
+  .footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 9.5px;
+    color: #888;
+    border-top: 1px solid #dde3ef;
+    padding-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<!-- EN-TÊTE -->
+<div class="header">
+  <h1>PowerShell — Scripting &amp; Automatisation</h1>
+  <p>Mémo de révision rapide · Formation DevSecOps Azure · Simplon</p>
+  <span class="badge">PowerShell 7 · Windows &amp; Linux</span>
+</div>
+
+<!-- SECTION 1 : Cmdlets essentielles -->
+<div class="grid">
+
+  <div class="card blue full">
+    <h2>Cmdlets essentielles — convention Verbe-Nom</h2>
+    <table>
+      <tr><th>Cmdlet PowerShell</th><th>Alias</th><th>Équivalent Bash</th><th>Rôle</th></tr>
+      <tr><td><code>Get-ChildItem</code></td><td><code>ls</code>, <code>dir</code></td><td><code>ls</code></td><td>Lister les fichiers</td></tr>
+      <tr><td><code>Set-Location</code></td><td><code>cd</code></td><td><code>cd</code></td><td>Changer de dossier</td></tr>
+      <tr><td><code>Get-Location</code></td><td><code>pwd</code></td><td><code>pwd</code></td><td>Afficher le dossier courant</td></tr>
+      <tr><td><code>New-Item</code></td><td>—</td><td><code>mkdir</code> / <code>touch</code></td><td>Créer un fichier ou dossier</td></tr>
+      <tr><td><code>Copy-Item</code></td><td><code>cp</code></td><td><code>cp</code></td><td>Copier</td></tr>
+      <tr><td><code>Move-Item</code></td><td><code>mv</code></td><td><code>mv</code></td><td>Déplacer / renommer</td></tr>
+      <tr><td><code>Remove-Item</code></td><td><code>rm</code></td><td><code>rm</code></td><td>Supprimer</td></tr>
+      <tr><td><code>Get-Content</code></td><td><code>cat</code></td><td><code>cat</code></td><td>Lire un fichier</td></tr>
+      <tr><td><code>Write-Output</code></td><td><code>echo</code></td><td><code>echo</code></td><td>Afficher du texte</td></tr>
+      <tr><td><code>Select-String</code></td><td>—</td><td><code>grep</code></td><td>Rechercher un motif dans un fichier</td></tr>
+      <tr><td><code>Where-Object</code></td><td><code>?</code></td><td>—</td><td>Filtrer des objets dans le pipeline</td></tr>
+      <tr><td><code>Select-Object</code></td><td><code>select</code></td><td>—</td><td>Choisir des propriétés d'objets</td></tr>
+      <tr><td><code>Sort-Object</code></td><td><code>sort</code></td><td><code>sort</code></td><td>Trier des objets</td></tr>
+      <tr><td><code>Measure-Object</code></td><td>—</td><td><code>wc</code></td><td>Compter / sommer / moyenner</td></tr>
+      <tr><td><code>ForEach-Object</code></td><td><code>%</code></td><td>boucle <code>for</code></td><td>Itérer sur chaque objet du pipeline</td></tr>
+      <tr><td><code>Out-File</code></td><td>—</td><td><code>&gt; fichier</code></td><td>Écrire dans un fichier</td></tr>
+      <tr><td><code>Export-Csv</code></td><td>—</td><td>—</td><td>Exporter en CSV</td></tr>
+      <tr><td><code>Test-Path</code></td><td>—</td><td><code>-f</code> / <code>-d</code></td><td>Tester si un fichier/dossier existe</td></tr>
+      <tr><td><code>Get-Command</code></td><td><code>gcm</code></td><td><code>which</code></td><td>Trouver une cmdlet ou commande</td></tr>
+      <tr><td><code>Get-Help</code></td><td><code>help</code></td><td><code>man</code></td><td>Afficher l'aide</td></tr>
+    </table>
+  </div>
+
+</div>
+
+<div class="sep"></div>
+
+<!-- SECTION 2 : Variables & Types + Opérateurs -->
+<div class="grid">
+
+  <div class="card accent">
+    <h2>Variables &amp; Types</h2>
+    <pre><span class="cmt"># Déclaration</span>
+<span class="var">$nom</span>    = <span class="str">"NexaCloud"</span>
+<span class="var">$port</span>   = <span class="num">5001</span>
+<span class="var">$actif</span>  = <span class="var">$true</span>
+
+<span class="cmt"># Typage explicite (recommandé en script)</span>
+[<span class="kw">string</span>]<span class="var">$nom</span>  = <span class="str">"NexaCloud"</span>
+[<span class="kw">int</span>]<span class="var">$port</span>    = <span class="num">5001</span>
+[<span class="kw">bool</span>]<span class="var">$debug</span>  = <span class="var">$false</span>
+
+<span class="cmt"># Tableau</span>
+<span class="var">$niveaux</span> = @(<span class="str">"INFO"</span>, <span class="str">"WARNING"</span>, <span class="str">"ERROR"</span>)
+<span class="var">$niveaux</span>[<span class="num">0</span>]       <span class="cmt"># → "INFO"</span>
+<span class="var">$niveaux</span>.Count    <span class="cmt"># → 3</span>
+
+<span class="cmt"># Hashtable (dictionnaire)</span>
+<span class="var">$config</span> = @{
+    projet = <span class="str">"NexaCloud"</span>
+    port   = <span class="num">5001</span>
+}
+<span class="var">$config</span>[<span class="str">"port"</span>]   <span class="cmt"># → 5001</span>
+<span class="var">$config</span>.port     <span class="cmt"># → 5001</span></pre>
+  </div>
+
+  <div class="card green">
+    <h2>Opérateurs de comparaison</h2>
+    <table>
+      <tr><th>Opérateur</th><th>Sens</th><th>Exemple</th></tr>
+      <tr><td><code>-eq</code></td><td>égal</td><td><code>$a -eq $b</code></td></tr>
+      <tr><td><code>-ne</code></td><td>différent</td><td><code>$a -ne $b</code></td></tr>
+      <tr><td><code>-gt</code></td><td>supérieur</td><td><code>$a -gt 5</code></td></tr>
+      <tr><td><code>-lt</code></td><td>inférieur</td><td><code>$a -lt 10</code></td></tr>
+      <tr><td><code>-ge</code></td><td>supérieur ou égal</td><td><code>$a -ge 3</code></td></tr>
+      <tr><td><code>-le</code></td><td>inférieur ou égal</td><td><code>$a -le 3</code></td></tr>
+      <tr><td><code>-like</code></td><td>joker <code>*</code></td><td><code>$s -like "Err*"</code></td></tr>
+      <tr><td><code>-match</code></td><td>regex</td><td><code>$s -match "\d+"</code></td></tr>
+      <tr><td><code>-and</code></td><td>ET logique</td><td><code>$a -gt 0 -and $b -lt 10</code></td></tr>
+      <tr><td><code>-or</code></td><td>OU logique</td><td><code>$a -eq 1 -or $b -eq 2</code></td></tr>
+      <tr><td><code>-not</code></td><td>NON logique</td><td><code>-not $condition</code></td></tr>
+    </table>
+    <div class="tip">💡 PowerShell n'utilise pas <code>==</code>, <code>!=</code>, <code>&gt;</code> — toujours les opérateurs avec tiret.</div>
+  </div>
+
+</div>
+
+<div class="sep"></div>
+
+<!-- SECTION 3 : Pipeline & Filtrage -->
+<div class="grid">
+
+  <div class="card purple full">
+    <h2>Le pipeline orienté objet — la différence clé avec Bash</h2>
+    <pre><span class="cmt"># PowerShell passe des OBJETS (pas du texte brut) d'une cmdlet à l'autre</span>
+<span class="fn">Get-ChildItem</span> | <span class="fn">Where-Object</span> { <span class="var">$_</span>.Length <span class="op">-gt</span> <span class="num">1024</span> } | <span class="fn">Sort-Object</span> Length <span class="op">-Descending</span>
+
+<span class="cmt"># $_ = l'objet courant dans le pipeline</span>
+<span class="fn">Get-ChildItem</span> <span class="str">"*.log"</span> | <span class="fn">ForEach-Object</span> { <span class="fn">Write-Output</span> <span class="var">$_</span>.Name }
+
+<span class="cmt"># Compter des éléments : encapsuler dans () puis .Count</span>
+(<span class="fn">Get-Content</span> <span class="str">"server.log"</span>).Count          <span class="cmt"># ✅ nombre de lignes</span>
+(<span class="fn">Select-String</span> <span class="str">"ERROR"</span> <span class="str">"server.log"</span>).Count  <span class="cmt"># ✅ nombre de lignes ERROR</span>
+
+<span class="cmt"># Select-String retourne des objets MatchInfo, pas du texte !</span>
+<span class="fn">Select-String</span> <span class="str">"ERROR"</span> <span class="str">"server.log"</span> | <span class="fn">ForEach-Object</span> { <span class="var">$_</span>.Line }       <span class="cmt"># texte</span>
+<span class="fn">Select-String</span> <span class="str">"ERROR"</span> <span class="str">"server.log"</span> | <span class="fn">ForEach-Object</span> { <span class="var">$_</span>.LineNumber }  <span class="cmt"># n° ligne</span>
+
+<span class="cmt"># Exporter en CSV propre</span>
+<span class="fn">Get-ChildItem</span> | <span class="fn">Select-Object</span> Name, Length | <span class="fn">Export-Csv</span> <span class="str">"data.csv"</span> <span class="op">-NoTypeInformation</span></pre>
+  </div>
+
+</div>
+
+<div class="sep"></div>
+
+<!-- SECTION 4 : Conditions & Boucles -->
+<div class="grid">
+
+  <div class="card accent">
+    <h2>Conditions</h2>
+    <pre><span class="cmt"># if / elseif / else</span>
+<span class="kw">if</span> (<span class="var">$nb</span> <span class="op">-gt</span> <span class="num">10</span>) {
+    <span class="fn">Write-Output</span> <span class="str">"Grand"</span>
+} <span class="kw">elseif</span> (<span class="var">$nb</span> <span class="op">-eq</span> <span class="num">5</span>) {
+    <span class="fn">Write-Output</span> <span class="str">"Exactement 5"</span>
+} <span class="kw">else</span> {
+    <span class="fn">Write-Output</span> <span class="str">"Petit"</span>
+}
+
+<span class="cmt"># switch (équivalent d'un if/elseif chaîné)</span>
+<span class="kw">switch</span> (<span class="var">$niveau</span>) {
+    <span class="str">"ERROR"</span>    { <span class="fn">Write-Output</span> <span class="str">"Erreur !"</span> }
+    <span class="str">"CRITICAL"</span> { <span class="fn">Write-Output</span> <span class="str">"CRITIQUE !"</span> }
+    <span class="kw">default</span>    { <span class="fn">Write-Output</span> <span class="str">"Inconnu"</span> }
+}
+
+<span class="cmt"># Tester l'existence d'un fichier</span>
+<span class="kw">if</span> (<span class="fn">Test-Path</span> <span class="str">"server.log"</span>) { <span class="fn">Write-Output</span> <span class="str">"Existe"</span> }
+<span class="kw">if</span> (<span class="op">-not</span> (<span class="fn">Test-Path</span> <span class="str">"server.log"</span>)) { <span class="fn">Write-Error</span> <span class="str">"Introuvable"</span>; <span class="kw">exit</span> <span class="num">1</span> }</pre>
+  </div>
+
+  <div class="card orange">
+    <h2>Boucles</h2>
+    <pre><span class="cmt"># foreach (boucle classique)</span>
+<span class="kw">foreach</span> (<span class="var">$n</span> <span class="kw">in</span> @(<span class="str">"INFO"</span>,<span class="str">"ERROR"</span>)) {
+    <span class="fn">Write-Output</span> <span class="var">$n</span>
+}
+
+<span class="cmt"># ForEach-Object (pipeline)</span>
+<span class="num">1</span>..<span class="num">5</span> | <span class="fn">ForEach-Object</span> { <span class="fn">Write-Output</span> <span class="str">"Tour $_"</span> }
+<span class="cmt"># 1..5 génère @(1,2,3,4,5)</span>
+
+<span class="cmt"># for (numérique)</span>
+<span class="kw">for</span> (<span class="var">$i</span> = <span class="num">1</span>; <span class="var">$i</span> <span class="op">-le</span> <span class="num">5</span>; <span class="var">$i</span>++) {
+    <span class="fn">Write-Output</span> <span class="str">"Tour $i"</span>
+}
+
+<span class="cmt"># while</span>
+<span class="var">$c</span> = <span class="num">0</span>
+<span class="kw">while</span> (<span class="var">$c</span> <span class="op">-lt</span> <span class="num">3</span>) {
+    <span class="fn">Write-Output</span> <span class="var">$c</span>
+    <span class="var">$c</span>++   <span class="cmt"># raccourci pour $c = $c + 1</span>
+}</pre>
+  </div>
+
+</div>
+
+<div class="sep"></div>
+
+<!-- SECTION 5 : Fonctions & Scripts -->
+<div class="grid">
+
+  <div class="card blue">
+    <h2>Fonctions</h2>
+    <pre><span class="cmt"># Déclarer une fonction</span>
+<span class="kw">function</span> <span class="fn">Compter-Niveau</span> {
+    <span class="kw">param</span>([<span class="kw">string</span>]<span class="var">$Niveau</span>, [<span class="kw">string</span>]<span class="var">$Fichier</span>)
+    <span class="kw">return</span> (<span class="fn">Select-String</span> <span class="var">$Niveau</span> <span class="var">$Fichier</span>).Count
+}
+
+<span class="cmt"># Appel avec paramètres nommés</span>
+<span class="var">$nb</span> = <span class="fn">Compter-Niveau</span> <span class="op">-Niveau</span> <span class="str">"ERROR"</span> <span class="op">-Fichier</span> <span class="str">"server.log"</span>
+
+<span class="cmt"># Fonction avec couleur (Write-Host)</span>
+<span class="kw">function</span> <span class="fn">Write-Ok</span> { <span class="kw">param</span>(<span class="var">$m</span>) <span class="fn">Write-Host</span> <span class="str">"[OK] $m"</span> <span class="op">-ForegroundColor</span> Green }
+
+<span class="cmt"># Paramètre avec valeur par défaut</span>
+<span class="kw">param</span>([<span class="kw">string</span>]<span class="var">$LogFile</span> = <span class="str">"server.log"</span>, [<span class="kw">int</span>]<span class="var">$Seuil</span> = <span class="num">3</span>)
+<span class="cmt"># Appel : .\script.ps1 -LogFile "autre.log" -Seuil 5</span></pre>
+  </div>
+
+  <div class="card green">
+    <h2>Syntaxes clés à retenir</h2>
+    <pre><span class="cmt"># Here-string (texte multi-lignes)</span>
+<span class="var">$texte</span> = @<span class="str">"
+Projet : $nomProjet
+Date   : $(Get-Date -Format 'dd/MM/yyyy')
+"</span>@   <span class="cmt"># ← le "@ doit être EN DÉBUT DE LIGNE</span>
+
+<span class="cmt"># Sous-expression dans une chaîne</span>
+<span class="str">"Lignes : $($contenu.Count)"</span>   <span class="cmt"># ✅</span>
+<span class="str">"Lignes : $contenu.Count"</span>      <span class="cmt"># ❌ affiche .Count comme texte</span>
+
+<span class="cmt"># Répétition de chaîne</span>
+<span class="str">"="</span> * <span class="num">40</span>   <span class="cmt"># → "======...=" (40 fois)</span>
+
+<span class="cmt"># Objet personnalisé</span>
+[<span class="kw">PSCustomObject</span>]@{ Niveau = <span class="str">"ERROR"</span>; Count = <span class="num">5</span> }
+
+<span class="cmt"># Arrondi mathématique</span>
+[<span class="kw">math</span>]::<span class="fn">Round</span>(<span class="var">$nb</span> * <span class="num">100</span> / <span class="var">$total</span>, <span class="num">1</span>)
+
+<span class="cmt"># Découper une chaîne</span>
+<span class="str">"PORT=5001"</span> <span class="op">-split</span> <span class="str">"="</span>, <span class="num">2</span>   <span class="cmt"># → @("PORT","5001")</span>
+
+<span class="cmt"># Supprimer l'affichage d'une commande</span>
+<span class="fn">New-Item</span> <span class="str">"fichier"</span> | <span class="fn">Out-Null</span></pre>
+  </div>
+
+</div>
+
+<div class="sep"></div>
+
+<!-- SECTION 6 : Fichiers & Export + Exécution -->
+<div class="grid">
+
+  <div class="card accent">
+    <h2>Lire, écrire, exporter</h2>
+    <pre><span class="cmt"># Lire un fichier</span>
+<span class="var">$lines</span> = <span class="fn">Get-Content</span> <span class="str">"server.log"</span>
+
+<span class="cmt"># Premières / dernières lignes</span>
+<span class="fn">Get-Content</span> <span class="str">"server.log"</span> | <span class="fn">Select-Object</span> <span class="op">-First</span> <span class="num">5</span>
+<span class="fn">Get-Content</span> <span class="str">"server.log"</span> | <span class="fn">Select-Object</span> <span class="op">-Last</span> <span class="num">3</span>
+
+<span class="cmt"># Écrire dans un fichier (écrase)</span>
+<span class="var">$rapport</span> | <span class="fn">Out-File</span> <span class="str">"rapport.txt"</span> <span class="op">-Encoding</span> UTF8
+
+<span class="cmt"># Ajouter à un fichier existant</span>
+<span class="fn">Add-Content</span> <span class="op">-Path</span> <span class="str">"rapport.txt"</span> <span class="op">-Value</span> <span class="str">"nouvelle ligne"</span>
+
+<span class="cmt"># CSV propre (sans ligne de type PowerShell)</span>
+<span class="fn">Get-ChildItem</span> | <span class="fn">Select-Object</span> Name, Length | <span class="fn">Export-Csv</span> <span class="str">"data.csv"</span> <span class="op">-NoTypeInformation</span></pre>
+  </div>
+
+  <div class="card orange">
+    <h2>Lancer un script &amp; politique d'exécution</h2>
+    <pre><span class="cmt"># Lancer un script (session courante)</span>
+.\mon-script.ps1
+
+<span class="cmt"># Lancer dans une session isolée</span>
+pwsh <span class="op">-File</span> mon-script.ps1
+
+<span class="cmt"># Autoriser les scripts sur Windows (1 seule fois)</span>
+<span class="fn">Set-ExecutionPolicy</span> <span class="op">-ExecutionPolicy</span> RemoteSigned <span class="op">-Scope</span> CurrentUser</pre>
+
+    <div class="tip">
+      💡 <strong>Pas de shebang en PowerShell.</strong> L'extension <code>.ps1</code> suffit.<br>
+      Sur macOS/Linux, pas de restriction d'exécution.
+    </div>
+
+    <div class="sep" style="margin:8px 0"></div>
+
+    <h2 style="margin-top:10px">Couleurs dans le terminal</h2>
+    <pre><span class="fn">Write-Host</span> <span class="str">"OK"</span>      <span class="op">-ForegroundColor</span> Green
+<span class="fn">Write-Host</span> <span class="str">"Warn"</span>    <span class="op">-ForegroundColor</span> Yellow
+<span class="fn">Write-Host</span> <span class="str">"Erreur"</span>  <span class="op">-ForegroundColor</span> Red
+<span class="fn">Write-Host</span> <span class="str">"Info"</span>    <span class="op">-ForegroundColor</span> Cyan</pre>
+  </div>
+
+</div>
+
+<div class="sep"></div>
+
+<!-- SECTION 7 : Pièges courants -->
+<div class="card full" style="border-left: 4px solid #e74c3c;">
+  <h2>Pièges courants — erreurs à ne pas faire</h2>
+  <div class="grid-3">
+    <div>
+      <div class="pill pill-red">Erreur fréquente</div>
+      <pre style="margin-top:6px; font-size:9.5px"><span class="cmt"># ❌ .Count sur la commande brute</span>
+Get-Content <span class="str">"server.log"</span>.Count
+
+<span class="cmt"># ✅ Encapsuler dans ()</span>
+(Get-Content <span class="str">"server.log"</span>).Count</pre>
+    </div>
+    <div>
+      <div class="pill pill-red">Erreur fréquente</div>
+      <pre style="margin-top:6px; font-size:9.5px"><span class="cmt"># ❌ Propriété sans $()</span>
+<span class="str">"Total : $contenu.Count"</span>
+
+<span class="cmt"># ✅ Sous-expression obligatoire</span>
+<span class="str">"Total : $($contenu.Count)"</span></pre>
+    </div>
+    <div>
+      <div class="pill pill-red">Erreur fréquente</div>
+      <pre style="margin-top:6px; font-size:9.5px"><span class="cmt"># ❌ "@ pas en début de ligne</span>
+$t = @"
+  texte
+  "@   <span class="cmt"># ← espaces avant : ERREUR</span>
+
+<span class="cmt"># ✅ Collé à gauche</span>
+$t = @"
+  texte
+"@</pre>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- SECTION 8 : Aide et exploration -->
+<div class="card blue full">
+  <h2>Explorer PowerShell — commandes d'aide</h2>
+  <div class="grid">
+    <div>
+      <pre><span class="cmt"># Aide sur une cmdlet</span>
+<span class="fn">Get-Help</span> Get-ChildItem
+<span class="fn">Get-Help</span> Get-ChildItem <span class="op">-Examples</span>
+
+<span class="cmt"># Chercher par verbe ou motif</span>
+<span class="fn">Get-Command</span> <span class="op">-Verb</span> <span class="str">"Get"</span>
+<span class="fn">Get-Command</span> *Item*
+
+<span class="cmt"># Voir les alias</span>
+<span class="fn">Get-Alias</span> ls</pre>
+    </div>
+    <div>
+      <pre><span class="cmt"># Inspecter les propriétés d'un objet</span>
+<span class="fn">Get-Item</span> <span class="str">"server.log"</span> | <span class="fn">Select-Object</span> *
+
+<span class="cmt"># Version de PowerShell</span>
+<span class="var">$PSVersionTable</span>.PSVersion
+
+<span class="cmt"># Variables d'environnement</span>
+<span class="var">$env:PATH</span>
+<span class="var">$env:PORT</span>   <span class="cmt"># après SetEnvironmentVariable</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- PIED DE PAGE -->
+<div class="footer">
+  Formation DevSecOps Azure · Simplon · PowerShell 7 · Juin 2026
+</div>
+
+</body>
+</html>
