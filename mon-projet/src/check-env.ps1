@@ -29,21 +29,19 @@ Test-Commande "git" "git"
 
 Write-Host ""
 
-# TODO: vérifiez que ces deux fichiers existent avec Test-Path
-# Fichiers : "config.json" et "ressources/server.log"
-# Si le fichier existe  -> Write-Ok "Fichier trouvé : ..."
-# Si le fichier manque  -> Write-Warn "Fichier manquant : ..."
-# Indice : vous avez déjà utilisé foreach à l'étape 4
 
-function Test-Path {
+function Test-Chemin {
 	param([string]$fichier)
-	if () {
-		
+	if (Test-Path $fichier) {
+		Write-Ok "c'est bon le zin, le fichier $fichier est là"
 	} else {
-		
+		Write-Warn "Le fichier $fichier n'existe pas."
 	}
 }
 
+foreach ($f in @("ressources/server.log","config.json")){
+	Test-Chemin $f
+}
 
 
 Write-Host ""
