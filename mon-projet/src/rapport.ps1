@@ -1,4 +1,4 @@
-apport.ps1 — Génère un rapport complet avec des fonctions
+# Rapport.ps1 — Génère un rapport complet avec des fonctions
 
 param([string]$LogFile = "ressources/server.log")
 
