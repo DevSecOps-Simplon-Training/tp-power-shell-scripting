@@ -1,5 +1,12 @@
 # setup.ps1 — Prépare le projet NexaCloud en une commande
 
+Get-Content ".env.example" | Where-Object { $_ -match "=" } | ForEach-Object {
+    $cle, $valeur = $_ -split "=", 2
+    [System.Environment]::SetEnvironmentVariable($cle.Trim(), $valeur.Trim(), "Process")
+}
+
+Write-Output "Port : $env:PORT"
+
 # Les fonctions d'affichage sont fournies
 function Write-Banner {
     param([string]$Texte, [string]$Couleur = "Cyan")
